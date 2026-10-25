@@ -1,1 +1,3 @@
-# cpsc4970-deep-learning-student
+# CPSC4970: Deep Learning Sample code
+
+This repository contains code displayed during lecture demos.
