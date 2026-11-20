@@ -1,0 +1,72 @@
+{
+  "torch": "2.2.2",
+  "torchxrayvision": "1.5.7",
+  "labels": [
+    "Atelectasis",
+    "Consolidation",
+    "Infiltration",
+    "Pneumothorax",
+    "Edema",
+    "Emphysema",
+    "Fibrosis",
+    "Effusion",
+    "Pneumonia",
+    "Pleural_Thickening",
+    "Cardiomegaly",
+    "Nodule",
+    "Mass",
+    "Hernia",
+    "Lung Lesion",
+    "Fracture",
+    "Lung Opacity",
+    "Enlarged Cardiomediastinum"
+  ],
+  "images": [
+    {
+      "file": "00000001_000.png",
+      "scores": {
+        "Atelectasis": 0.5057798624038696,
+        "Consolidation": 0.3124328851699829,
+        "Infiltration": 0.5220189094543457,
+        "Pneumothorax": 0.3067786693572998,
+        "Edema": 0.21286574006080627,
+        "Emphysema": 0.5033609867095947,
+        "Fibrosis": 0.5401595830917358,
+        "Effusion": 0.39427393674850464,
+        "Pneumonia": 0.1800641119480133,
+        "Pleural_Thickening": 0.5104175806045532,
+        "Cardiomegaly": 0.6215150952339172,
+        "Nodule": 0.5091791152954102,
+        "Mass": 0.41041299700737,
+        "Hernia": 0.012677949853241444,
+        "Lung Lesion": 0.21828456223011017,
+        "Fracture": 0.2890746295452118,
+        "Lung Opacity": 0.3682606518268585,
+        "Enlarged Cardiomediastinum": 0.43138638138771057
+      }
+    },
+    {
+      "file": "00027426_000.png",
+      "scores": {
+        "Atelectasis": 0.20470298826694489,
+        "Consolidation": 0.5068972110748291,
+        "Infiltration": 0.5192073583602905,
+        "Pneumothorax": 0.2818419635295868,
+        "Edema": 0.0011140061542391777,
+        "Emphysema": 0.41803616285324097,
+        "Fibrosis": 0.5012698173522949,
+        "Effusion": 0.09856285154819489,
+        "Pneumonia": 0.06439400464296341,
+        "Pleural_Thickening": 0.20465317368507385,
+        "Cardiomegaly": 0.011204813607037067,
+        "Nodule": 0.5363314151763916,
+        "Mass": 0.6060466766357422,
+        "Hernia": 0.006287870928645134,
+        "Lung Lesion": 0.5293928384780884,
+        "Fracture": 0.5019188523292542,
+        "Lung Opacity": 0.27717727422714233,
+        "Enlarged Cardiomediastinum": 0.5032644271850586
+      }
+    }
+  ]
+}

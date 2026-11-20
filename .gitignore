@@ -1,0 +1,11 @@
+# Downloaded model weights, caches and generated output
+artifacts/
+
+# Python and Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+
+# macOS
+.DS_Store

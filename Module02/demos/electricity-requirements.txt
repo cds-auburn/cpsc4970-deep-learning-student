@@ -1,0 +1,7 @@
+# Verified together on Linux x86_64 CPU, Python 3.14.7 (course Docker image).
+torch==2.15.0
+chronos-forecasting==2.3.2
+transformers==5.23.0
+numpy==2.5.5
+pandas==3.1.1
+matplotlib==3.11.2

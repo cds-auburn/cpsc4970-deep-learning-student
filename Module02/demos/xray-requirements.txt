@@ -1,0 +1,2 @@
+# Add to an environment with a compatible torch/torchvision pair.
+torchxrayvision==1.5.7
