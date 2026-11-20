@@ -6,8 +6,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-ROOT = Path(__file__).resolve().parents[1]
-BUNDLE = ROOT / "models" / "heart"
+HERE = Path(__file__).resolve().parent
 CONTINUOUS = ["age", "trestbps", "chol", "thalach"]
 LABELS = ["absence", "presence"]
 
@@ -31,9 +30,9 @@ def prepare(records, metadata):
 
 
 def load_model():
-    metadata = json.loads((BUNDLE / "metadata.json").read_text())
+    metadata = json.loads((HERE / "metadata.json").read_text())
     model = architecture()
-    model.load_state_dict(torch.load(BUNDLE / "weights.pt", map_location="cpu",
+    model.load_state_dict(torch.load(HERE / "weights.pt", map_location="cpu",
                                      weights_only=True))
     model.eval()
     return model, metadata

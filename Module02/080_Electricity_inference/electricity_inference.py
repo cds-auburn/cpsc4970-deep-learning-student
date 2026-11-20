@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import torch
 from matplotlib.ticker import StrMethodFormatter
 
-from electricity_model import MODULE, load_example, load_pipeline
+from electricity_model import HERE, load_example, load_pipeline
 
 HISTORY, MODEL = "#16465c", "#a34700"
 
@@ -58,7 +58,7 @@ def plot_forecast(times, history, predictions=None, actual=None, band=False, day
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=MODULE / "artifacts/electricity")
+    parser.add_argument("--output-dir", type=Path, default=HERE / "artifacts/results")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     plt.switch_backend("Agg")  # Save files; a notebook importing plot_forecast keeps its own.

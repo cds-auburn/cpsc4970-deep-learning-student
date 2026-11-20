@@ -7,13 +7,13 @@ import json
 from pathlib import Path
 import urllib.request
 
-ROOT = Path(__file__).resolve().parents[1]
+HERE = Path(__file__).resolve().parent
 
 
 def main():
-    manifest = json.loads((ROOT / "models/xray/manifest.json").read_text())
+    manifest = json.loads((HERE / "manifest.json").read_text())
     for item in [*manifest["images"], manifest["weights"]]:
-        path = ROOT / item["path"]
+        path = HERE / item["path"]
         expected = item.get("sha256")
         if not path.exists():
             path.parent.mkdir(parents=True, exist_ok=True)

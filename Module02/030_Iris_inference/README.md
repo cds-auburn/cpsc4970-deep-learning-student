@@ -8,8 +8,8 @@ versicolor or virginica) from four measurements in centimeters.
 Fisher, R. A. (1936). [Iris](https://doi.org/10.24432/C56C76). UCI Machine
 Learning Repository, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 The model uses the 150-sample copy distributed with scikit-learn 1.6.1, the same
-file M2-030 loads. See [`data/iris/README.md`](../../data/iris/README.md);
-`metadata.json` records the source SHA-256.
+file M2-030 loads. See **Data files** below; `metadata.json` records the
+source SHA-256.
 
 ## Files and supplied helpers
 
@@ -18,7 +18,7 @@ holds values used by the code: feature order, training means and standard
 deviations, and class labels. `weights.pt` holds the learned weights and biases.
 Keep the weights and metadata together.
 
-[`demos/iris_model.py`](../../demos/iris_model.py) supplies the matching network
+[`iris_model.py`](iris_model.py) supplies the matching network
 architecture and two helpers:
 
 - `load_model()` builds the network, restores the saved weights, selects
@@ -27,7 +27,7 @@ architecture and two helpers:
   below. Pass **unstandardized** measurements with shape `(N, 4)`. The helper
   returns a float32 tensor of the same shape.
 
-[`data/iris/test.csv`](../../data/iris/test.csv) contains the 25 samples kept
+[`test.csv`](test.csv) contains the 25 samples kept
 out of training, with the recorded species code for comparison. Its `species`
 column is not a model input.
 
@@ -76,8 +76,8 @@ been established as calibrated probabilities.
 
 ## Run inference
 
-Requires CPU PyTorch and NumPy; the supplied files run offline. From
-`Module02`, run this example in Python or a notebook:
+Requires CPU PyTorch and NumPy; the supplied files run offline. From this
+folder, run this example in Python or a notebook:
 
 ```python
 import sys
@@ -88,7 +88,7 @@ sys.path.insert(0, "demos")
 from iris_model import load_model, prepare
 
 model, metadata = load_model()
-data = np.loadtxt("data/iris/test.csv", delimiter=",", skiprows=1, dtype=np.float32)
+data = np.loadtxt("test.csv", delimiter=",", skiprows=1, dtype=np.float32)
 test_x = torch.from_numpy(data[:, :4])
 
 x = prepare(test_x[:3], metadata)
@@ -104,10 +104,10 @@ print(scores.softmax(dim=1))
 ```
 
 The input helper handles normalization; do not standardize the measurements
-before passing them to it. To run the all-sample demo from the repository root:
+before passing them to it. To run the all-sample demo from this folder:
 
 ```sh
-python Module02/demos/iris_inference.py
+python iris_inference.py
 ```
 
 ## Instructor preparation and evaluation
@@ -118,11 +118,11 @@ standalone script were executed for M2-030, with Python 3.14.7, PyTorch 2.15.0 a
 macOS. The demo needs no network or training. It loads a plain tensor
 state_dict with `weights_only=True`.
 
-To regenerate the supplied weights, metadata and test CSV, run from the
-repository root:
+To regenerate the supplied weights, metadata and test CSV, run from this
+folder:
 
 ```sh
-python Module02/tools/train_iris_model.py
+python train_iris_model.py
 ```
 
 Instructor preparation: seed 497040, one CPU thread, deterministic operations.
@@ -148,15 +148,32 @@ methodology are deferred to later lectures.
 
 ## Live notebook
 
-Open [`demos/iris_inference.ipynb`](../../demos/iris_inference.ipynb) in a Jupyter
+Open [`iris_inference.ipynb`](iris_inference.ipynb) in a Jupyter
 kernel with PyTorch, NumPy and pandas. Run its Setup cell before class. Two mini-demos load the
 150-sample file from GitHub, which needs a network connection; the rest runs
 offline. Setup is initially collapsed in notebook
-front ends that support the saved metadata; it makes `Module02` the
-working directory, so the slide code's relative path works.
+front ends that support the saved metadata. Open the notebook from this
+folder, so the slide code's relative path works.
 
 Three demonstrations match the lecture: first predict for one flower, then
 reconstruct and inspect its four input values, then check the answer and
 compare predictions for three flowers. The final optional cell checks all 25
 test samples. The recorded species is used only for comparison and never
 included in the model input.
+
+## Data files
+
+Source: Fisher, R. A. (1936). [Iris](https://doi.org/10.24432/C56C76). UCI Machine
+Learning Repository, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+| File | Contents |
+|---|---|
+| `iris.csv` | The copy distributed with scikit-learn 1.6.1 (BSD 3-Clause), downloaded 2026-11-18 from `https://raw.githubusercontent.com/scikit-learn/scikit-learn/1.6.1/sklearn/datasets/data/iris.csv`. This is the file M2-030 loads from the same URL. One header line, then 150 samples. |
+| `test.csv` | The 25 samples kept out of training the M2-030 model, written by `train_iris_model.py` in the order they were drawn. One header line of column names, then 25 samples. |
+
+Both files have four measurements in centimeters (sepal length, sepal width,
+petal length, petal width) followed by a species code: 0 = setosa,
+1 = versicolor, 2 = virginica. Neither file has a row-ID column.
+
+SHA-256 of `iris.csv`: `f13ffa8fdd56fd8e6c8d16d4081a3fbd3114bcd0aae4256c43205169cd9d1449`
+(also recorded in `metadata.json`).

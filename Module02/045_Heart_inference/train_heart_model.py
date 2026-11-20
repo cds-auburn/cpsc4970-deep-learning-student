@@ -5,13 +5,9 @@ No tuning against held-out records: fixed seed, architecture, and update count.
 import csv
 import hashlib
 import json
-from pathlib import Path
-import sys
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "demos"))
 import torch
-from heart_model import BUNDLE, CONTINUOUS, LABELS, architecture, prepare
+from heart_model import CONTINUOUS, HERE, LABELS, architecture, prepare
 
 SEED = 497030
 FIELDS = ["age", "sex", "cp", "trestbps", "chol", "fbs", "restecg",
@@ -22,7 +18,7 @@ def main():
     torch.manual_seed(SEED)
     torch.set_num_threads(1)
     torch.use_deterministic_algorithms(True)
-    source = ROOT / "data/heart/processed.cleveland.data"
+    source = HERE / "processed.cleveland.data"
     records = []
     for index, row in enumerate(csv.reader(source.open()), start=1):
         original = dict(zip(FIELDS, row))
@@ -65,11 +61,10 @@ def main():
                   for b in (0, 1)] for a in (0, 1)]
     metadata["heldout_confusion_actual_by_predicted"] = confusion
     metadata["heldout_accuracy"] = float((predictions == y[heldout]).float().mean())
-    BUNDLE.mkdir(parents=True, exist_ok=True)
-    torch.save(model.state_dict(), BUNDLE / "weights.pt")
-    (BUNDLE / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
+    torch.save(model.state_dict(), HERE / "weights.pt")
+    (HERE / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
     # Export every held-out record, in source order: no cherry-picked successes.
-    with (ROOT / "data/heart/demo.csv").open("w", newline="") as file:
+    with (HERE / "demo.csv").open("w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=["source_row", *CONTINUOUS, "cp", "target"])
         writer.writeheader()
         writer.writerows(records[i] for i in sorted(heldout))

@@ -4,14 +4,10 @@ No tuning against the test samples: fixed seed, architecture, and update count.
 """
 import hashlib
 import json
-from pathlib import Path
-import sys
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "demos"))
 import numpy as np
 import torch
-from iris_model import BUNDLE, FEATURES, LABELS, architecture, prepare
+from iris_model import FEATURES, HERE, LABELS, architecture, prepare
 
 SEED = 497040
 TEST = 25
@@ -21,7 +17,7 @@ def main():
     torch.manual_seed(SEED)
     torch.set_num_threads(1)
     torch.use_deterministic_algorithms(True)
-    source = ROOT / "data/iris/iris.csv"
+    source = HERE / "iris.csv"
     # The same file M2-030 loads from GitHub: one header line, then 150 samples.
     data = np.loadtxt(source, delimiter=",", skiprows=1, dtype=np.float32)
     x_raw = torch.from_numpy(data[:, :4])
@@ -52,14 +48,13 @@ def main():
                   for b in range(3)] for a in range(3)]
     metadata["test_confusion_actual_by_predicted"] = confusion
     metadata["test_accuracy"] = float((predictions == y[test]).float().mean())
-    BUNDLE.mkdir(parents=True, exist_ok=True)
-    torch.save(model.state_dict(), BUNDLE / "weights.pt")
-    (BUNDLE / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
+    torch.save(model.state_dict(), HERE / "weights.pt")
+    (HERE / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
     # Export every test sample, in the order drawn: no cherry-picked successes.
     lines = [",".join([*FEATURES, "species"])]
     lines += ["{:.1f},{:.1f},{:.1f},{:.1f},{}".format(*x_raw[i].tolist(), int(y[i]))
               for i in test]
-    (ROOT / "data/iris/test.csv").write_text("\n".join(lines) + "\n")
+    (HERE / "test.csv").write_text("\n".join(lines) + "\n")
     print(json.dumps({"train": len(train), "test": len(test),
                       "confusion": confusion, "accuracy": metadata["test_accuracy"]}))
 

@@ -10,8 +10,8 @@ Janosi, A., Steinbrunn, W., Pfisterer, M., & Detrano, R. (1989).
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 Downloaded 2026-11-09 from
 `https://archive.ics.uci.edu/static/public/45/heart+disease.zip`.
-Original documentation and 303-row processed Cleveland file are retained under
-`../../data/heart/`; metadata records the source SHA-256.
+Original documentation and 303-row processed Cleveland file are retained in this
+folder (`heart-disease.names`, `processed.cleveland.data`); metadata records the source SHA-256.
 
 ## Files and supplied helpers
 
@@ -20,7 +20,7 @@ holds values used by the code: feature order, training means and standard
 deviations, and class labels. `weights.pt` holds the learned weights and biases.
 Keep the weights and metadata together.
 
-[`demos/heart_model.py`](../../demos/heart_model.py) supplies the matching network
+[`heart_model.py`](heart_model.py) supplies the matching network
 architecture and two helpers:
 
 - `load_model()` builds the network, restores the saved weights, selects
@@ -29,7 +29,7 @@ architecture and two helpers:
   Pass a list of dictionaries containing the named, **unstandardized** measurements
   and chest-pain codes. The helper returns a float32 tensor of shape `(N, 8)`.
 
-[`data/heart/demo.csv`](../../data/heart/demo.csv) contains 61 records kept out
+[`demo.csv`](demo.csv) contains 61 records kept out
 of training, with recorded labels for comparison. Its `target` and `source_row`
 columns are not model inputs.
 
@@ -89,7 +89,7 @@ presence in historical records, not future heart-attack risk.
 
 ## Run inference
 
-Requires CPU PyTorch; the supplied files run offline. From `Module02`,
+Requires CPU PyTorch; the supplied files run offline. From this folder,
 run this example in Python or a notebook:
 
 ```python
@@ -101,7 +101,7 @@ sys.path.insert(0, "demos")
 from heart_model import load_model, prepare
 
 model, metadata = load_model()
-with open("data/heart/demo.csv", newline="") as file:
+with open("demo.csv", newline="") as file:
     records = list(csv.DictReader(file))
 
 x = prepare(records[:3], metadata)
@@ -117,10 +117,10 @@ print(scores.softmax(dim=1))
 ```
 
 The input helper handles normalization; do not standardize the records before
-passing them to it. To run the existing all-record demo from the repository root:
+passing them to it. To run the existing all-record demo from this folder:
 
 ```sh
-python Module02/demos/heart_inference.py
+python heart_inference.py
 ```
 
 ## Instructor preparation and evaluation
@@ -132,10 +132,10 @@ the saved weights reproduced the slide values to three decimals.
 The demo needs only PyTorch and Python's standard library, with no network or
 training. It loads a plain tensor state_dict with `weights_only=True`.
 
-To regenerate the supplied weights, metadata and demo CSV, run from the repository root:
+To regenerate the supplied weights, metadata and demo CSV, run from this folder:
 
 ```sh
-python Module02/tools/train_heart_model.py
+python train_heart_model.py
 ```
 
 Instructor preparation: seed 497030, one CPU thread, deterministic operations.
@@ -159,12 +159,12 @@ Training and split methodology are deferred to later lectures.
 
 ## Live notebook
 
-Open [`demos/heart_inference.ipynb`](../../demos/heart_inference.ipynb) in a Jupyter
+Open [`heart_inference.ipynb`](heart_inference.ipynb) in a Jupyter
 kernel with PyTorch and pandas. Run its Setup and Load the model cells before
 presenting; they load the CSV records, frozen `model` and saved `metadata`.
 Setup is initially collapsed
 in notebook frontends that support the saved metadata. The slide snippets
-continue that session; the notebook locates the checkout from its working directory.
+continue that session. Open the notebook from this folder.
 
 The lecture is M2-045. Three
 demonstrations match it: first predict for one patient,

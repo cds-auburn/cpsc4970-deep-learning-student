@@ -5,8 +5,7 @@ from pathlib import Path
 import torch
 from torch import nn
 
-ROOT = Path(__file__).resolve().parents[1]
-BUNDLE = ROOT / "models" / "iris"
+HERE = Path(__file__).resolve().parent
 FEATURES = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
 LABELS = ["setosa", "versicolor", "virginica"]
 
@@ -26,9 +25,9 @@ def prepare(measurements, metadata):
 
 
 def load_model():
-    metadata = json.loads((BUNDLE / "metadata.json").read_text())
+    metadata = json.loads((HERE / "metadata.json").read_text())
     model = architecture()
-    model.load_state_dict(torch.load(BUNDLE / "weights.pt", map_location="cpu",
+    model.load_state_dict(torch.load(HERE / "weights.pt", map_location="cpu",
                                      weights_only=True))
     model.eval()
     return model, metadata

@@ -8,8 +8,8 @@ from PIL import Image
 import torch
 import torchxrayvision as xrv
 
-ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "models/xray/manifest.json"
+HERE = Path(__file__).resolve().parent
+MANIFEST = HERE / "manifest.json"
 
 
 def prepare_image(path):
@@ -29,9 +29,9 @@ def load_model():
     manifest = json.loads(MANIFEST.read_text())
     if xrv.__version__ != manifest["torchxrayvision"]:
         raise RuntimeError(f"Use torchxrayvision=={manifest['torchxrayvision']}")
-    weights = ROOT / manifest["weights"]["path"]
+    weights = HERE / manifest["weights"]["path"]
     if not weights.is_file():
-        raise FileNotFoundError("Run tools/prepare_xray_demo.py once before the demo")
+        raise FileNotFoundError("Run prepare_xray_demo.py once before the demo")
     if hashlib.sha256(weights.read_bytes()).hexdigest() != manifest["weights"]["sha256"]:
         raise ValueError("Pretrained weights checksum mismatch; run preparation again")
     torch.manual_seed(497050)  # Initial parameters are replaced by pretrained weights.
@@ -44,7 +44,7 @@ def sample_paths():
     manifest = json.loads(MANIFEST.read_text())
     paths = []
     for item in manifest["images"]:
-        path = ROOT / item["path"]
+        path = HERE / item["path"]
         if hashlib.sha256(path.read_bytes()).hexdigest() != item["sha256"]:
             raise ValueError(f"Example image checksum mismatch: {path.name}")
         paths.append(path)

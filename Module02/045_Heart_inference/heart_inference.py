@@ -1,12 +1,12 @@
 """Offline inference; run from any directory with PyTorch installed."""
 import csv
 import torch
-from heart_model import ROOT, load_model, prepare
+from heart_model import HERE, load_model, prepare
 
 
 def main():
     model, metadata = load_model()
-    with (ROOT / "data/heart/demo.csv").open(newline="") as file:
+    with (HERE / "demo.csv").open(newline="") as file:
         records = list(csv.DictReader(file))
     x = prepare(records, metadata)
     with torch.inference_mode():

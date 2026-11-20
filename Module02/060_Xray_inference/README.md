@@ -5,7 +5,7 @@ at 1.5.7, with the `densenet121-res224-all` DenseNet-121 checkpoint.
 Model references: [library paper](https://arxiv.org/abs/2111.00595) and
 [checkpoint study](https://arxiv.org/abs/2002.02497).
 Upstream code licensing: [Apache 2.0](https://github.com/mlmed/torchxrayvision/blob/main/LICENSE).
-Image provenance and attribution are in `../../data/xray/README.md`.
+Image provenance and attribution are under **Demonstration images** below.
 
 The checkpoint's upstream metadata lists the training sources as
 `nih-pc-chex-mimic_ch-google-openi-rsna`: NIH ChestX-ray14, PadChest,
@@ -18,7 +18,7 @@ demo images were held out.
 For the public model's usage example, see the
 [upstream README](https://github.com/mlmed/torchxrayvision#getting-started).
 The **Preprocessing and output contract** section below records the exact
-requirements for our pinned version and bundled files. `demos/xray_model.py`
+requirements for our pinned version and bundled files. `xray_model.py`
 supplies `load_model()` and `prepare_image(path)`; the loaded model supplies
 its ordered output names through `model.pathologies`.
 
@@ -28,12 +28,12 @@ Use a CPU environment with a compatible PyTorch/torchvision pair (the course
 image already supplies those). Add the pinned library:
 
 ```sh
-python -m pip install -r Module02/demos/xray-requirements.txt
-python Module02/tools/prepare_xray_demo.py
-python Module02/demos/xray_inference.py
+python -m pip install -r requirements.txt
+python prepare_xray_demo.py
+python xray_inference.py
 ```
 
-Commands above run from the repository root. Python 3.12.15, PyTorch 2.2.2,
+Commands above run from this folder. Python 3.12.15, PyTorch 2.2.2,
 torchvision 0.17.2, NumPy 1.26.4 and TorchXRayVision 1.5.7 were verified on
 macOS CPU; `verified-environment.txt` records the full installed environment.
 This is a verification record, not a recommendation to downgrade the course
@@ -43,7 +43,7 @@ No GPU, dataset registration or clinical-data account is required.
 Only preparation needs the network. It downloads two small public PNGs and
 one approximately 28 MB checkpoint, verifying their SHA-256 hashes against
 `manifest.json`. Images are tracked with the course; the checkpoint is cached
-under ignored `artifacts/xray/weights/` rather than committed to Git. On another
+under ignored `artifacts/weights/` rather than committed to Git. On another
 computer, rerun preparation. It verifies existing files and skips downloading
 them. Delete a corrupted cached checkpoint and rerun preparation if necessary.
 Downloads use a temporary file so interruptions do not leave a partial cache.
@@ -56,16 +56,16 @@ whose checksum is pinned in the manifest.
 
 Run the notebook's Setup cell before presenting; this loads `model` and locates
 the example files. Slide snippets continue that prepared session. To run slide
-cells using their relative paths, use `Module02` as the working
+cells using their relative paths, use this folder as the working
 directory. The standalone script resolves paths independently of its working
 directory. To save every output:
 
 ```sh
-python Module02/demos/xray_inference.py --output Module02/artifacts/xray/results.json
+python xray_inference.py --output artifacts/results.json
 ```
 
 For the live visual demonstration, open
-[`demos/xray_inference.ipynb`](../../demos/xray_inference.ipynb) in Jupyter
+[`xray_inference.ipynb`](xray_inference.ipynb) in Jupyter
 using this environment's kernel. Its three demonstrations follow the revised
 slides: make a first prediction, inspect/reconstruct that input, then compare
 another image. Setup is separate and initially collapsed in supporting notebook
@@ -117,3 +117,29 @@ uses seed 497050 before replacing initialized weights with pretrained values.
 Exact output values can vary across library versions and platforms; compare
 with a numerical tolerance rather than relying on bitwise cross-platform identity.
 No training or parameter updates occur in the inference demo.
+
+## Demonstration images
+
+Data provider: **NIH Clinical Center**. Source collection:
+[NIH ChestX-ray14 download site](https://nihcc.app.box.com/v/ChestXray-NIHCC).
+
+Citation: Wang, X., Peng, Y., Lu, L., Lu, Z., Bagheri, M., & Summers, R. (2017).
+*ChestX-ray8: Hospital-scale Chest X-ray Database and Benchmarks on Weakly-Supervised
+Classification and Localization of Common Thorax Diseases*. IEEE CVPR, 3462–3471.
+
+These two 512×512, 8-bit grayscale PNG examples are the files distributed in the
+[TorchXRayVision test collection](https://github.com/mlmed/torchxrayvision/tree/17726dd8f5e756eec3e5ae958281a289b05b1dae/tests):
+`00000001_000.png` and `00027426_000.png`. They are retained byte-for-byte;
+URLs and SHA-256 hashes appear in `manifest.json`.
+Retrieved 2026-11-09. Selection: the two NIH-named PNGs in that upstream folder,
+not examples selected for favorable model predictions.
+
+[NIH image use and attribution](https://docs.cloud.google.com/healthcare-api/docs/resources/public-datasets/nih-chest#license_and_attribution)
+permits unrestricted image use with the NIH download link, paper citation and
+provider acknowledgement above. This applies to the NIH images; it does not
+assert that every image in the upstream repository has the same terms.
+
+No reference diagnosis annotations are bundled for these images. The upstream
+collection calls them tests, but their membership in this model's training data
+is unknown: do not use this pair to claim held-out accuracy or independent
+clinical validation. The lecture's scores are model outputs, not ground truth.

@@ -1,4 +1,4 @@
-"""Run from Module02; each CSV row is one sample."""
+"""Run from this folder (Module02); each CSV row is one sample."""
 import csv
 import torch
 

@@ -1,12 +1,12 @@
 """Offline inference; run from any directory with PyTorch and NumPy installed."""
 import numpy as np
 import torch
-from iris_model import ROOT, load_model, prepare
+from iris_model import HERE, load_model, prepare
 
 
 def main():
     model, metadata = load_model()
-    data = np.loadtxt(ROOT / "data/iris/test.csv", delimiter=",",
+    data = np.loadtxt(HERE / "test.csv", delimiter=",",
                       skiprows=1, dtype=np.float32)
     test_x = torch.from_numpy(data[:, :4])
     test_y = torch.from_numpy(data[:, 4].astype(np.int64))
